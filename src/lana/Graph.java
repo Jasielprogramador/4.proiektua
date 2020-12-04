@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import pasaden_lana.Gakoak;
+import pasaden_lana.WebOrria;
 import pasaden_lana.WebOrriak;
 
 
@@ -197,7 +199,82 @@ public class Graph {
 		}
 	}
 	
+	private String[] urlOrdenatuQuickSort(String arr[], int l, int r) {
+		int hasiera = l;
+		int amaiera = r;
+		if (r - l > 0) {
+			String pibotea = arr[l];
+			while (amaiera > hasiera) {
+				while (arr[hasiera].compareTo(pibotea) <= 0 && hasiera <= r	 && amaiera > hasiera) hasiera++;
+				while(arr[amaiera].compareTo(pibotea) > 0 && amaiera >= l && amaiera >= hasiera) amaiera--;
+				if (amaiera > hasiera) {
+					aldatu(arr, hasiera, amaiera);
+					}
+			}
+			aldatu(arr, l, amaiera);
+			urlOrdenatuQuickSort(arr, l, amaiera - 1);
+			urlOrdenatuQuickSort(arr, amaiera + 1, r);	
+		} 
+		return arr;
+				
+	}
+	private void aldatu(String arr[], int i, int j) {
+		//pre: 0 <= i < arr.length; 0 <= j < arr.length; arr != null
+		//post: arr Array<String>-eko i eta j posizioetan dauden string-ak trukatzen ditu.
+		String temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+	}
+	
 	public ArrayList<Bikote> bilatzailea(String gakoHitz){
+		// Post: Emaitza emandako gako-hitza duten web-orrien zerrenda da,
+		//berepagerank-aren   arabera   handienetik   txikienera   ordenatuta
+		//(hau   da,lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
+		
+		Gakoak gakoak = new Gakoak();
+		gakoak.listaKargatu();											//Lehenik gako hitzen lista kargatuko dut
+		gakoak.gakoaLortu(gakoHitz).kargatuLista();						//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
+																		//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
+																		//kargatzen du
+		
+		ArrayList<WebOrria> emaitza = new ArrayList<WebOrria>();		
+		emaitza = gakoak.gakoaLortu(gakoHitz).getLista();				//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
+																		//lista gordetzen du
+		
+		
+		
+		//hemen doa quicksort algoritmoa 
+		
+		
+		
+		
+		
+	}
+	
+	
+	public ArrayList<Bikote> bilatzailea(String gakoHitz1,String gakoHitz2){
+		// Post: Emaitza emandako gako-hitzak dituzten web-orrien zerrenda da,
+		//bere pagerank-aren arabera handienetik txikienera ordenatuta (hau da,
+		//lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
+		
+		
+		Gakoak g1 = new Gakoak();
+		Gakoak g2 = new Gakoak();
+		g1.listaKargatu();	
+		g2.listaKargatu();												//Lehenik gako hitzen lista kargatuko dut
+		g1.gakoaLortu(gakoHitz1).kargatuLista();	
+		g2.gakoaLortu(gakoHitz2).kargatuLista();						//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
+																		//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
+																		//kargatzen du
+		
+		ArrayList<WebOrria> e1 = new ArrayList<WebOrria>();	
+		ArrayList<WebOrria> e2 = new ArrayList<WebOrria>();
+		e1 = g1.gakoaLortu(gakoHitz1).getLista();	
+		e2 = g2.gakoaLortu(gakoHitz2).getLista();						//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
+																		//lista gordetzen du
+		
+		
+		//hemen doa quicksort algoritmoa
 		
 	}
 }

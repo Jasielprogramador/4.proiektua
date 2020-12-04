@@ -21,6 +21,22 @@ public class Gakoak {
 		return this.lista.iterator();
 	}
 	
+	//Esto lo añado para conseguir el gakoa para despues utilizarlo en el graph
+	public Gakoa gakoaLortu(String gakoa) {
+		boolean aurkitua = false;
+		Iterator<Gakoa> itr = this.getIteradorea();
+		Gakoa g = null;
+		while(itr.hasNext()) {
+			g = itr.next();
+			if(g.getIzena().equals(gakoa))
+				aurkitua = true;
+		}
+		if(!aurkitua) {
+			g = null;
+		}
+		return g;
+	}
+	
 	public void listaKargatu() {
 		try {
 			Scanner sarrera=new Scanner(new FileReader("words.txt"));
