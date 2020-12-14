@@ -144,19 +144,6 @@ public class WebOrriak {
 		return this.map.get(s);
 	}
 	
-	//Ordenar la lista con quicksort  ACABAR
-	/*public ArrayList<String> webOrdenatua(){
-		ArrayList<String> e = new ArrayList<String>();
-		
-		this.quickSort(this.getUrlLista(), 0, this.lista.size());
-		for (int i = 0;i<this.lista.size();i++) {
-			e.set(i,this.lista.get(i).getUrl());
-		}
-		return e;
-		
-		
-	}*/
-	
 	private void swap(ArrayList<WebOrria> lista,int ezker, int eskuin) {
 		WebOrria w=this.lista.get(ezker);
 		this.lista.set(ezker,this.lista.get(eskuin));

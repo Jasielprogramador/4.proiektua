@@ -98,13 +98,12 @@ public class Main {
 		
 		//Deiak
 		Graph grafoa = new Graph();
-		WebOrriak zerrenda = WebOrriak.getNireWebOrriak();
 		Teklatua teklatua = Teklatua.getNireTeklatua();
 		
 		//Metodo barneko aldagaiak
 		boolean irten = false;
-		zerrenda.webOrriakKargatu();
-		zerrenda.webOrrienErlazioakKargatu();
+		WebOrriak.getNireWebOrriak().webOrriakKargatu();
+		WebOrriak.getNireWebOrriak().webOrrienErlazioakKargatu();
 
 		
 		Gakoak gakoak=new Gakoak();
@@ -122,8 +121,10 @@ public class Main {
 			System.out.println("7.WebOrrien zerrenda dokumentu batean idatzi");
 			System.out.println("8.Grafoa kargatu");
 			System.out.println("9.Grafoa inprimatu");
-			System.out.println("10.Graph klasearen erlazionatuta metodoa"); 
-			System.out.println("11.Graph klasearen erlazioBide metodoa");
+			System.out.println("10.Graph klaseko erlazionatuta metodoa"); 
+			System.out.println("11.Graph klaseko erlazioBide metodoa");
+			System.out.println("12.Graph klaseko pageRank metodoa");
+			System.out.println("13.Graph klaseko ");
 			
 			int zenbakia=teklatua.irakurriZenb();
 			WebOrria web=null;
@@ -131,42 +132,42 @@ public class Main {
 			if(zenbakia==1) {
 				System.out.println("Zein WebOrri lortu nahi duzu?");
 				String text = teklatua.irakurriString();
-				getWebOrria(zerrenda,text);
+				getWebOrria(WebOrriak.getNireWebOrriak(),text);
 				
 			}
 			else if(zenbakia==2) {
 				System.out.println("Zein Web Orri txertatu nahi duzu?"); 
 				String text = teklatua.irakurriString();
-				web = new WebOrria(text,zerrenda.luzeera());
-				webOrriTxertatu(zerrenda,web);
+				web = new WebOrria(text,WebOrriak.getNireWebOrriak().luzeera());
+				webOrriTxertatu(WebOrriak.getNireWebOrriak(),web);
 			}
 			else if(zenbakia==3) {
 				System.out.println("Zein WebOrri ezabatu nahi duzu?"); 
 				String text = teklatua.irakurriString();
 				
-				web=zerrenda.getWebOrria(text);
-				webOrriKendu(zerrenda,web);
+				web=WebOrriak.getNireWebOrriak().getWebOrria(text);
+				webOrriKendu(WebOrriak.getNireWebOrriak(),web);
 			}
 			else if(zenbakia==4) {
 				System.out.println("Proba, WebOrria(0-euro-handys.de,22)-rekin egingo dugu "); 
 				web=new WebOrria("0-euro-handys.de", 22);
-				estekak(zerrenda,web);
+				estekak(WebOrriak.getNireWebOrriak(),web);
 			}
 			else if(zenbakia==5) {
 				System.out.println("Proba, abaddon gakoarekin egingo dugu"); 
 				Gakoa gakoa=new Gakoa("abaddon");
-				hitzak(zerrenda,gakoa);
+				hitzak(WebOrriak.getNireWebOrriak(),gakoa);
 			}
 			else if(zenbakia==6) {
-				zerrenda.quickSort(zerrenda.getLista(),0,WebOrriak.getNireWebOrriak().luzeera());
+				WebOrriak.getNireWebOrriak().quickSort(WebOrriak.getNireWebOrriak().getLista(),0,WebOrriak.getNireWebOrriak().luzeera());
 				int i = 0;
 			}
 			else if(zenbakia==7) {
 				System.out.println("Proba, url_lista,txt izeneko dokumentu batekin egin dugu"); 
-				idatziDokumentuan(zerrenda);
+				idatziDokumentuan(WebOrriak.getNireWebOrriak());
 			}
 			else if(zenbakia == 8) {
-				grafoa.grafoaSortu(zerrenda);
+				grafoa.grafoaSortu(WebOrriak.getNireWebOrriak().getLista());
 				System.out.println("Grafoa kargatu egin da");
 			}
 			else if(zenbakia==9) {
@@ -196,10 +197,11 @@ public class Main {
 				}
 				
 			}
-			else if(zenbakia == 0) {
-				irten = true;
+			else if(zenbakia == 12) {
+				HashMap<String,Double> map = grafoa.pageRank();
 			}
-		}
-		
+			
+			
+		}	
 	}
 }

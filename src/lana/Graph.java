@@ -25,14 +25,14 @@ public class Graph {
 	private ArrayList<Integer>[] adjList;
 	
 	
-	private HashMap<String,Double> pageRank;
+	private ArrayList<Integer>[] adjListAlde;
 
 	
 	//Eraikitzailea
 	public Graph(){
 	}
 	
-	public void grafoaSortu(WebOrriak lista) throws IOException{
+	public void grafoaSortu(ArrayList<WebOrria> lista) throws IOException{
 		
 		if(!lista.equals(null)) {
 			// Post: web-en zerrendatik grafoa sortu
@@ -42,31 +42,35 @@ public class Graph {
 	        // KODEA INPLEMENTATU
 			
 			this.th=new HashMap<String,Integer>();
-			keys = new String[lista.luzeera()];
-			this.adjList= new ArrayList[lista.luzeera()];
+			keys = new String[lista.size()];
+			this.adjList= new ArrayList[lista.size()];
+			this.adjListAlde = new ArrayList[lista.size()];
 			
-			for (int i = 0;i<lista.luzeera();i++) {
+			for (int i = 0;i<lista.size();i++) {
 				
 				//1.pausua th bete
-				this.th.put(lista.getLista().get(i).getUrl(),i);
+				this.th.put(lista.get(i).getUrl(),i);
 				
 				// 2. pausua: “keys” bete
-				this.keys[i]=lista.getLista().get(i).getUrl();
+				this.keys[i]=lista.get(i).getUrl();
 			}
 			
 			//hasieratzeko
-			for (int z = 0;z<lista.luzeera();z++) {
+			for (int z = 0;z<lista.size();z++) {
 				this.adjList[z]=new ArrayList<Integer>();
-			
+				this.adjListAlde[z]=new ArrayList<Integer>();
 			}
 			
-			for ( int a = 0;a<lista.luzeera();a++) {
+			for ( int a = 0;a<lista.size();a++) {
 				
-				for (int h = 0;h<lista.getLista().get(a).getListaOrriak().size();h++) {
+				for (int h = 0;h<lista.get(a).getListaOrriak().size();h++) {
 					
 					// 3. pausua: “adjList” bete 
-					int arku = this.th.get(lista.getLista().get(a).getListaOrriak().get(h).getUrl());
+					int arku = this.th.get(lista.get(a).getListaOrriak().get(h).getUrl());
 					this.adjList[a].add(arku);
+					
+					//4.pausua "adjListInbertsoa" bete
+					this.adjListAlde[arku].add(a);
 				}
 	
 			}
@@ -150,7 +154,6 @@ public class Graph {
 	
 			while(!aztertuGabeak.isEmpty() && !aurkitua) {
 				Integer a = aztertuGabeak.remove();
-				emaitza.add(this.keys[a]);
 				
 				if(a.equals(pos2)) {					
 					aurkitua=true;
@@ -160,6 +163,7 @@ public class Graph {
 						if(aztertuak[adjList[a].get(i)] == false) {	
 							aztertuGabeak.add(adjList[a].get(i));
 							aztertuak[adjList[a].get(i)]=true;
+							emaitza.set(i,this.keys[a]);
 						}
 					}
 				}
@@ -171,60 +175,120 @@ public class Graph {
 	}
 	
 	
-	private void pageRankaSortu() {
-
-		HashMap<String,Double> zaharra = new HashMap<String,Double>();
-		HashMap<String,Double> berria =  new HashMap<String,Double>();
-		double baturaAbsolutua = 0.0;
-		int grafoarenLuzeera=keys.length;
-		double hasierakoFor = (double)1/grafoarenLuzeera;
-		double amaierakoFor = ((1-0.85)/grafoarenLuzeera)+0.85;
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//LABORATEGI BERRIA
+	
+	public HashMap<String,Double> pageRank() {
 		
-		for(int i = 0;i<grafoarenLuzeera;i++) {
-			zaharra.put(keys[i],hasierakoFor);
+		//Exekuzio denbora kalkulatzeko
+		long hasiera = System.currentTimeMillis();
+		
+		//Ea iterazio gehiago ala ez
+		double diferentziaAbsolutua = 0.0;
+		
+		int grafoarenLuzeera=keys.length;
+		double[] zaharra = new double[grafoarenLuzeera];
+		double[] berria =  new double[grafoarenLuzeera];
+		double haFormula = 1.00/(double)grafoarenLuzeera;
+		
+		final double dumpingFactor = 0.85;
+		double itFormula = (1-dumpingFactor)/grafoarenLuzeera;
+		boolean lehena = true;
+		
+		double unekoRank = 0.0;
+		
+		if(grafoarenLuzeera>0) {
+		
+			for(int i = 0;i<grafoarenLuzeera;i++) {
+				zaharra[i]=haFormula;
+			}
+			
+			while(diferentziaAbsolutua >= 0.0001 || lehena) {
+				lehena = false;
+				
+				
+				for(int j = 0; j<grafoarenLuzeera;j++) {
+					
+					double[] aux = zaharra;
+					zaharra = berria;
+					berria = aux;
+					
+					for(int i: this.adjListAlde[j]) {
+						unekoRank += zaharra[i]/this.adjList[i].size();
+					}
+					unekoRank *= dumpingFactor;
+					unekoRank += itFormula;
+					berria[j] = unekoRank;
+							
+				}
+				
+				for (int i=0;i<grafoarenLuzeera;i++) {
+					diferentziaAbsolutua += Math.abs(zaharra[i]-berria[i]);
+				}
+			}
+			
+			long bukaera = System.currentTimeMillis();
+			double denbora=(double)((bukaera-hasiera)/1000);
+			System.out.println(denbora+"segundu");
 		}
 		
-		int i = 1;
-		while(baturaAbsolutua >= 0.0001) {
-			for(int j = 0; j<grafoarenLuzeera;j++) {
-				if(!berria.get(keys[i]).equals(null))
-					berria.put(keys[i],zaharra.get(j)/keys[j].length());
-				else {
-					berria.put(keys[i],berria.get(keys[i])+zaharra.get(j)/keys[j].length());
-				}
-				baturaAbsolutua = baturaAbsolutua + Math.abs(berria.get(j)-zaharra.get(j));
-			}
+		HashMap<String,Double> emaitza = new HashMap<String,Double>();
+		
+		int i = 0;
+		for(String key : this.th.keySet()) {
+			emaitza.put(key,berria[i]);
 			i++;
-			baturaAbsolutua = baturaAbsolutua * amaierakoFor;
+		}
+	
+		return emaitza;
+	}
+	
+	
+	
+	///////////////////////////////////////////////////////////
+	
+	//QUICKSORT
+	/////////////////////////////////////////////////////////////////////////////////////////
+	public void quickSort(ArrayList<WebOrria> lista,int hasiera, int bukaera) {
+		if(bukaera-hasiera>0) {
+			
+			int z = this.zatiketa(lista,hasiera,bukaera);
+			this.quickSort(lista,hasiera,z-1);
+			this.quickSort(lista,z+1,bukaera);
+
 		}
 	}
 	
-	private String[] urlOrdenatuQuickSort(String arr[], int l, int r) {
-		int hasiera = l;
-		int amaiera = r;
-		if (r - l > 0) {
-			String pibotea = arr[l];
-			while (amaiera > hasiera) {
-				while (arr[hasiera].compareTo(pibotea) <= 0 && hasiera <= r	 && amaiera > hasiera) hasiera++;
-				while(arr[amaiera].compareTo(pibotea) > 0 && amaiera >= l && amaiera >= hasiera) amaiera--;
-				if (amaiera > hasiera) {
-					aldatu(arr, hasiera, amaiera);
-					}
+	private int zatiketa(ArrayList<WebOrria> lista,int i, int f) {
+		String lag=lista.get(i).getUrl();
+		int ezker =i;
+		int eskuin=f;
+		
+		while(ezker<eskuin) {
+			while(lista.get(ezker).getUrl().compareTo(lag)<=0 && ezker<eskuin) {
+				ezker++;
 			}
-			aldatu(arr, l, amaiera);
-			urlOrdenatuQuickSort(arr, l, amaiera - 1);
-			urlOrdenatuQuickSort(arr, amaiera + 1, r);	
-		} 
-		return arr;
-				
+			while(lista.get(eskuin).getUrl().compareTo(lag)>0) {
+				eskuin--;
+			}
+			if(ezker<eskuin) {
+				this.swap(lista, ezker,eskuin);
+			}
+		}
+		lista.set(i, lista.get(eskuin));
+		lista.set(eskuin,WebOrriak.getNireWebOrriak().getWebOrria(lag));
+		
+		return eskuin;
 	}
-	private void aldatu(String arr[], int i, int j) {
-		//pre: 0 <= i < arr.length; 0 <= j < arr.length; arr != null
-		//post: arr Array<String>-eko i eta j posizioetan dauden string-ak trukatzen ditu.
-		String temp = arr[i];
-		arr[i] = arr[j];
-		arr[j] = temp;
+	
+	private void swap(ArrayList<WebOrria> lista,int ezker, int eskuin) {
+		WebOrria w=lista.get(ezker);
+		lista.set(ezker,lista.get(eskuin));
+		lista.set(eskuin, w);
 	}
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	
 	
 	public ArrayList<Bikote> bilatzailea(String gakoHitz){
 		// Post: Emaitza emandako gako-hitza duten web-orrien zerrenda da,
@@ -237,18 +301,19 @@ public class Graph {
 																		//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
 																		//kargatzen du
 		
-		ArrayList<WebOrria> emaitza = new ArrayList<WebOrria>();		
-		emaitza = gakoak.gakoaLortu(gakoHitz).getLista();				//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
-																		//lista gordetzen du
+		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();	
+		ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
 		
+		webOrrienLista = gakoak.gakoaLortu(gakoHitz).getLista();				//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
+																				//lista gordetzen du
+		for (int i = 0;i<webOrrienLista.size();i++) {
+			Double pr = this.pageRank().get(webOrrienLista.get(i).getUrl());
+			Bikote bikote = new Bikote(webOrrienLista.get(i).getUrl(),pr);
+			emaitza.set(i,bikote);
+		}
+		quickSort(emaitza,0,emaitza.size());
 		
-		
-		//hemen doa quicksort algoritmoa 
-		
-		
-		
-		
-		
+		return emaitza;
 	}
 	
 	
@@ -277,4 +342,5 @@ public class Graph {
 		//hemen doa quicksort algoritmoa
 		
 	}
+	
 }
