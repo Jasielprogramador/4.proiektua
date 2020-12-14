@@ -206,16 +206,18 @@ public class Graph {
 			
 			while(diferentziaAbsolutua >= 0.0001 || lehena) {
 				lehena = false;
+				double[] aux = zaharra;
+				zaharra = berria;
+				berria = aux;
 				
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
 					
-					double[] aux = zaharra;
-					zaharra = berria;
-					berria = aux;
+					unekoRank = 0.0;
 					
 					for(int i: this.adjListAlde[j]) {
 						unekoRank += zaharra[i]/this.adjList[i].size();
+						System.out.println("primero");
 					}
 					unekoRank *= dumpingFactor;
 					unekoRank += itFormula;
@@ -226,7 +228,10 @@ public class Graph {
 				for (int i=0;i<grafoarenLuzeera;i++) {
 					diferentziaAbsolutua += Math.abs(zaharra[i]-berria[i]);
 				}
+				System.out.println("antes del for nagusia");
 			}
+			
+			System.out.println("for nagusia");
 			
 			long bukaera = System.currentTimeMillis();
 			double denbora=(double)((bukaera-hasiera)/1000);
@@ -239,6 +244,10 @@ public class Graph {
 		for(String key : this.th.keySet()) {
 			emaitza.put(key,berria[i]);
 			i++;
+		}
+		
+		for(String key : this.th.keySet()) {
+			System.out.println(key+"-------"+this.th.get(key));
 		}
 	
 		return emaitza;
