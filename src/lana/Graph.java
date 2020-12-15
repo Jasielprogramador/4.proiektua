@@ -3,11 +3,13 @@ package lana;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+import pasaden_lana.Gakoa;
 import pasaden_lana.Gakoak;
 import pasaden_lana.WebOrria;
 import pasaden_lana.WebOrriak;
@@ -204,7 +206,8 @@ public class Graph {
 				zaharra[i]=(double)haFormula;
 			}
 			
-			while(diferentziaAbsolutua >= 0.0001 || lehena) {
+			int kont=0;
+			while(kont<100  || lehena) {
 				lehena = false;
 				double[] aux = zaharra;
 				zaharra = berria;
@@ -226,7 +229,8 @@ public class Graph {
 				for (int i=0;i<grafoarenLuzeera;i++) {
 					diferentziaAbsolutua += Math.abs(zaharra[i]-berria[i]);
 				}
-				System.out.println("amaitua");
+				System.out.println("zenbat segunduro");
+				kont++;
 			}
 			
 			long bukaera = System.currentTimeMillis();
@@ -255,7 +259,7 @@ public class Graph {
 	
 	//QUICKSORT
 	/////////////////////////////////////////////////////////////////////////////////////////
-	public void quickSort(ArrayList<WebOrria> lista,int hasiera, int bukaera) {
+	public void quickSort(ArrayList<Bikotea> lista,int hasiera, int bukaera) {
 		if(bukaera-hasiera>0) {
 			
 			int z = this.zatiketa(lista,hasiera,bukaera);
@@ -265,7 +269,7 @@ public class Graph {
 		}
 	}
 	
-	private int zatiketa(ArrayList<WebOrria> lista,int i, int f) {
+	private int zatiketa(ArrayList<Bikote> lista,int i, int f) {
 		String lag=lista.get(i).getUrl();
 		int ezker =i;
 		int eskuin=f;
@@ -301,22 +305,32 @@ public class Graph {
 		//(hau   da,lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
 		
 		Gakoak gakoak = new Gakoak();
-		gakoak.listaKargatu();											//Lehenik gako hitzen lista kargatuko dut
-		gakoak.gakoaLortu(gakoHitz).kargatuLista();						//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
-																		//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
-																		//kargatzen du
+		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
+		gakoak.listaKargatu();	
+	
+		if(gakoak.gakoaLortu(gakoHitz).equals(null))
+			System.out.println("Sartu duzun gakoa ez dago words.txt dokumentuaren barne");
 		
-		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();	
-		ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
+		else {
 		
-		webOrrienLista = gakoak.gakoaLortu(gakoHitz).getLista();				//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
-																				//lista gordetzen du
-		for (int i = 0;i<webOrrienLista.size();i++) {
-			Double pr = this.pageRank().get(webOrrienLista.get(i).getUrl());
-			Bikote bikote = new Bikote(webOrrienLista.get(i).getUrl(),pr);
-			emaitza.set(i,bikote);
+			Gakoa gakoa = gakoak.gakoaLortu(gakoHitz);			//Lehenik gako hitzen lista kargatuko dut
+			gakoa.kargatuLista();								//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
+																			//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
+																			//kargatzen du	
+			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
+			webOrrienLista = gakoa.getLista();
+																					//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
+																					//lista gordetzen du
+			for (int i = 0;i<webOrrienLista.size();i++) {
+				Double pr = this.pageRank().get(webOrrienLista.get(i).getUrl());
+				Bikote bikote = new Bikote(webOrrienLista.get(i).getUrl(),pr);
+				emaitza.add(bikote);
+			}
+			
+			//quicksort
+			
 		}
-		quickSort(emaitza,0,emaitza.size());
+		
 		
 		return emaitza;
 	}
@@ -330,22 +344,38 @@ public class Graph {
 		
 		Gakoak g1 = new Gakoak();
 		Gakoak g2 = new Gakoak();
+		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 		g1.listaKargatu();	
-		g2.listaKargatu();												//Lehenik gako hitzen lista kargatuko dut
-		g1.gakoaLortu(gakoHitz1).kargatuLista();	
-		g2.gakoaLortu(gakoHitz2).kargatuLista();						//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
-																		//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
-																		//kargatzen du
+		g2.listaKargatu();			
 		
-		ArrayList<WebOrria> e1 = new ArrayList<WebOrria>();	
-		ArrayList<WebOrria> e2 = new ArrayList<WebOrria>();
-		e1 = g1.gakoaLortu(gakoHitz1).getLista();	
-		e2 = g2.gakoaLortu(gakoHitz2).getLista();						//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
-																		//lista gordetzen du
-		
-		
-		//hemen doa quicksort algoritmoa
-		
+		if(g1.gakoaLortu(gakoHitz1).equals(null) || g2.gakoaLortu(gakoHitz2).equals(null))	
+			System.out.println("Sartutako gakoren bat ez dago words.txt dokumentuaren barne");
+		else {
+			g1.gakoaLortu(gakoHitz1).kargatuLista();	
+			g2.gakoaLortu(gakoHitz2).kargatuLista();						
+			
+			ArrayList<WebOrria> e1 = new ArrayList<WebOrria>();	
+			ArrayList<WebOrria> e2 = new ArrayList<WebOrria>();
+			e1 = g1.gakoaLortu(gakoHitz1).getLista();	
+			e2 = g2.gakoaLortu(gakoHitz2).getLista();		
+			
+			for (int i = 0;i<e1.size();i++) {
+				Double pr = this.pageRank().get(e1.get(i).getUrl());
+				Bikote bikote = new Bikote(e1.get(i).getUrl(),pr);
+				emaitza.add(bikote);
+			}
+			
+			for (int i = 0;i<e2.size();i++) {
+				Double pr = this.pageRank().get(e2.get(i).getUrl());
+				Bikote bikote = new Bikote(e2.get(i).getUrl(),pr);
+				emaitza.add(bikote);
+			}
+			
+			//quiicksort
+			System
+			
+		}
+		return emaitza;
 	}
 	
 }

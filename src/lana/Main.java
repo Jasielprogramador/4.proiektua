@@ -200,7 +200,14 @@ public class Main {
 			else if(zenbakia == 12) {
 				HashMap<String,Double> map = grafoa.pageRank();
 			}
-			
+			else if(zenbakia == 13) {
+				System.out.println("Url bat sartu");
+				String a = teklatua.irakurriString();
+				ArrayList<Bikote> emaitza = grafoa.bilatzailea(a);
+				for (int i = 0;i<emaitza.size();i++) {
+					System.out.println(emaitza.get(i));
+				}
+			}
 			
 		}	
 	}
