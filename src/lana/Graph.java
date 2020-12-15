@@ -190,7 +190,7 @@ public class Graph {
 		int grafoarenLuzeera=keys.length;
 		double[] zaharra = new double[grafoarenLuzeera];
 		double[] berria =  new double[grafoarenLuzeera];
-		double haFormula = 1.00/(double)grafoarenLuzeera;
+		double haFormula = (double)(1.0/(double)grafoarenLuzeera);
 		
 		final double dumpingFactor = 0.85;
 		double itFormula = (1-dumpingFactor)/grafoarenLuzeera;
@@ -201,7 +201,7 @@ public class Graph {
 		if(grafoarenLuzeera>0) {
 		
 			for(int i = 0;i<grafoarenLuzeera;i++) {
-				zaharra[i]=haFormula;
+				zaharra[i]=(double)haFormula;
 			}
 			
 			while(diferentziaAbsolutua >= 0.0001 || lehena) {
@@ -213,25 +213,21 @@ public class Graph {
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
 					
-					unekoRank = 0.0;
-					
 					for(int i: this.adjListAlde[j]) {
 						unekoRank += zaharra[i]/this.adjList[i].size();
-						System.out.println("primero");
 					}
 					unekoRank *= dumpingFactor;
 					unekoRank += itFormula;
 					berria[j] = unekoRank;
+					unekoRank = 0.0;
 							
 				}
 				
 				for (int i=0;i<grafoarenLuzeera;i++) {
 					diferentziaAbsolutua += Math.abs(zaharra[i]-berria[i]);
 				}
-				System.out.println("antes del for nagusia");
+				System.out.println("amaitua");
 			}
-			
-			System.out.println("for nagusia");
 			
 			long bukaera = System.currentTimeMillis();
 			double denbora=(double)((bukaera-hasiera)/1000);
