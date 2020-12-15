@@ -74,5 +74,9 @@ public class Gakoak {
 		return e;
 		
 	}
+	
+	public ArrayList<Gakoa> getLista(){
+		return this.lista;
+	}
 
 }

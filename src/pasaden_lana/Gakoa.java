@@ -40,8 +40,4 @@ public class Gakoa {
 		this.lista = WebOrriak.getNireWebOrriak().gakoaWebOrriak(this.izena);
 	}
 	
-	
-	
-	
-	
 }

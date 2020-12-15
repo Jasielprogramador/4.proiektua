@@ -296,7 +296,11 @@ public class Graph {
 		
 		Gakoak gakoak = new Gakoak();
 		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
-		gakoak.listaKargatu();	
+		gakoak.listaKargatu();
+		
+		for(int i = 0;i<gakoak.getLista().size();i++) {
+			gakoak.getLista().get(i).kargatuLista();
+		}
 	
 		if(gakoak.gakoaLortu(gakoHitz).equals(null))
 			System.out.println("Sartu duzun gakoa ez dago words.txt dokumentuaren barne");
@@ -304,7 +308,7 @@ public class Graph {
 		else {
 		
 			Gakoa gakoa = gakoak.gakoaLortu(gakoHitz);			//Lehenik gako hitzen lista kargatuko dut
-			gakoa.kargatuLista();								//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
+																	//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
 																			//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
 																			//kargatzen du	
 			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
@@ -336,7 +340,15 @@ public class Graph {
 		Gakoak g2 = new Gakoak();
 		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 		g1.listaKargatu();	
-		g2.listaKargatu();			
+		g2.listaKargatu();	
+		
+		for(int i = 0;i<g1.getLista().size();i++) {
+			g1.getLista().get(i).kargatuLista();
+		}
+		
+		for(int i = 0;i<g2.getLista().size();i++) {
+			g2.getLista().get(i).kargatuLista();
+		}
 		
 		if(g1.gakoaLortu(gakoHitz1).equals(null) || g2.gakoaLortu(gakoHitz2).equals(null))	
 			System.out.println("Sartutako gakoren bat ez dago words.txt dokumentuaren barne");
