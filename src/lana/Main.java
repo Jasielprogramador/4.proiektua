@@ -199,6 +199,9 @@ public class Main {
 			}
 			else if(zenbakia == 12) {
 				HashMap<String,Double> map = grafoa.pageRank();
+				for(String key : map.keySet()) {
+					System.out.println(key+"-------"+map.get(key));
+				}
 			}
 			else if(zenbakia == 13) {
 				System.out.println("Url bat sartu");

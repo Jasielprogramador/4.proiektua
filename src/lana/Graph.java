@@ -207,7 +207,7 @@ public class Graph {
 			}
 			
 			int kont=0;
-			while(kont<100  || lehena) {
+			while(kont<30  || lehena) {
 				lehena = false;
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
@@ -230,26 +230,15 @@ public class Graph {
 				zaharra = berria;
 				berria = aux;
 				kont++;
+				
+				System.out.println("iterazioa");
 			}
 			
 			long bukaera = System.currentTimeMillis();
 			double denbora=(double)((bukaera-hasiera)/1000);
 			System.out.println(denbora);
-		}
-		
-		HashMap<String,Double> emaitza = new HashMap<String,Double>();
-		
-		int i = 0;
-		for(String key : this.th.keySet()) {
-			emaitza.put(key,berria.get(this.keys[i]));
-			i++;
-		}
-		
-		for(String key : this.th.keySet()) {
-			System.out.println(key+"-------"+this.th.get(key));
-		}
-	
-		return emaitza;
+		}	
+		return berria;
 	}
 	
 	
