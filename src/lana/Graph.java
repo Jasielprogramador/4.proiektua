@@ -190,8 +190,8 @@ public class Graph {
 		double diferentziaAbsolutua = 0.0;
 		
 		int grafoarenLuzeera=keys.length;
-		double[] zaharra = new double[grafoarenLuzeera];
-		double[] berria =  new double[grafoarenLuzeera];
+		HashMap<String,Double> zaharra = new HashMap<String,Double>();
+		HashMap<String,Double> berria = new HashMap<String,Double>();
 		double haFormula = (double)(1.0/(double)grafoarenLuzeera);
 		
 		final double dumpingFactor = 0.85;
@@ -203,46 +203,45 @@ public class Graph {
 		if(grafoarenLuzeera>0) {
 		
 			for(int i = 0;i<grafoarenLuzeera;i++) {
-				zaharra[i]=(double)haFormula;
+				zaharra.put(this.keys[i], haFormula);
 			}
 			
 			int kont=0;
 			while(kont<100  || lehena) {
 				lehena = false;
-				double[] aux = zaharra;
-				zaharra = berria;
-				berria = aux;
-				
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
 					
 					for(int i: this.adjListAlde[j]) {
-						unekoRank += zaharra[i]/this.adjList[i].size();
+						unekoRank += zaharra.get(this.keys[i])/this.adjList[i].size();
 					}
 					unekoRank *= dumpingFactor;
 					unekoRank += itFormula;
-					berria[j] = unekoRank;
+					berria.put(this.keys[j],unekoRank);
 					unekoRank = 0.0;
-							
+	
 				}
 				
 				for (int i=0;i<grafoarenLuzeera;i++) {
-					diferentziaAbsolutua += Math.abs(zaharra[i]-berria[i]);
+					diferentziaAbsolutua += Math.abs(zaharra.get(this.keys[i])-berria.get(this.keys[i]));
 				}
-				System.out.println("zenbat segunduro");
+				
+				HashMap<String,Double> aux = zaharra;
+				zaharra = berria;
+				berria = aux;
 				kont++;
 			}
 			
 			long bukaera = System.currentTimeMillis();
 			double denbora=(double)((bukaera-hasiera)/1000);
-			System.out.println(denbora+"segundu");
+			System.out.println(denbora);
 		}
 		
 		HashMap<String,Double> emaitza = new HashMap<String,Double>();
 		
 		int i = 0;
 		for(String key : this.th.keySet()) {
-			emaitza.put(key,berria[i]);
+			emaitza.put(key,berria.get(this.keys[i]));
 			i++;
 		}
 		
