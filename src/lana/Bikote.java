@@ -8,4 +8,11 @@ public class Bikote {
 		this.web=pWeb;
 		this.pageRank=pPageRank;
 	}
+	
+	public String getWeb() {
+		return this.web;
+	}
+	public Double getPageRank() {
+		return this.pageRank;
+	}
 }

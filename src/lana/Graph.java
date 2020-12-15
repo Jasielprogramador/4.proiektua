@@ -243,11 +243,11 @@ public class Graph {
 	
 	
 	
-	///////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////
 	
 	//QUICKSORT
 	/////////////////////////////////////////////////////////////////////////////////////////
-	public void quickSort(ArrayList<Bikotea> lista,int hasiera, int bukaera) {
+	public void quickSort(ArrayList<Bikote > lista,int hasiera, int bukaera) {
 		if(bukaera-hasiera>0) {
 			
 			int z = this.zatiketa(lista,hasiera,bukaera);
@@ -258,15 +258,15 @@ public class Graph {
 	}
 	
 	private int zatiketa(ArrayList<Bikote> lista,int i, int f) {
-		String lag=lista.get(i).getUrl();
+		String lag=lista.get(i).getWeb();
 		int ezker =i;
 		int eskuin=f;
 		
 		while(ezker<eskuin) {
-			while(lista.get(ezker).getUrl().compareTo(lag)<=0 && ezker<eskuin) {
+			while(lista.get(ezker).getWeb().compareTo(lag)<=0 && ezker<eskuin) {
 				ezker++;
 			}
-			while(lista.get(eskuin).getUrl().compareTo(lag)>0) {
+			while(lista.get(eskuin).getWeb().compareTo(lag)>0) {
 				eskuin--;
 			}
 			if(ezker<eskuin) {
@@ -274,20 +274,22 @@ public class Graph {
 			}
 		}
 		lista.set(i, lista.get(eskuin));
-		lista.set(eskuin,WebOrriak.getNireWebOrriak().getWebOrria(lag));
+		WebOrria web = WebOrriak.getNireWebOrriak().getWebOrria(lag);
+		Bikote b = new Bikote(web.getUrl(),this.pageRank().get(web.getUrl()));
+		lista.set(eskuin,b);
 		
 		return eskuin;
 	}
 	
-	private void swap(ArrayList<WebOrria> lista,int ezker, int eskuin) {
-		WebOrria w=lista.get(ezker);
+	private void swap(ArrayList<Bikote> lista,int ezker, int eskuin) {
+		Bikote w=lista.get(ezker);
 		lista.set(ezker,lista.get(eskuin));
 		lista.set(eskuin, w);
 	}
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-	public ArrayList<Bikote> bilatzailea(String gakoHitz){
+	public ArrayList<Bikote> bilatzaileBat(String gakoHitz){
 		// Post: Emaitza emandako gako-hitza duten web-orrien zerrenda da,
 		//berepagerank-aren   arabera   handienetik   txikienera   ordenatuta
 		//(hau   da,lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
@@ -315,7 +317,7 @@ public class Graph {
 				emaitza.add(bikote);
 			}
 			
-			//quicksort
+			this.quickSort(emaitza, 0, emaitza.size()-1);
 			
 		}
 		
@@ -324,7 +326,7 @@ public class Graph {
 	}
 	
 	
-	public ArrayList<Bikote> bilatzailea(String gakoHitz1,String gakoHitz2){
+	public ArrayList<Bikote> bilatzaileBi(String gakoHitz1,String gakoHitz2){
 		// Post: Emaitza emandako gako-hitzak dituzten web-orrien zerrenda da,
 		//bere pagerank-aren arabera handienetik txikienera ordenatuta (hau da,
 		//lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
@@ -359,8 +361,7 @@ public class Graph {
 				emaitza.add(bikote);
 			}
 			
-			//quiicksort
-			System
+			this.quickSort(emaitza, 0, emaitza.size()-1);
 			
 		}
 		return emaitza;

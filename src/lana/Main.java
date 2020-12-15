@@ -124,7 +124,8 @@ public class Main {
 			System.out.println("10.Graph klaseko erlazionatuta metodoa"); 
 			System.out.println("11.Graph klaseko erlazioBide metodoa");
 			System.out.println("12.Graph klaseko pageRank metodoa");
-			System.out.println("13.Graph klaseko ");
+			System.out.println("13.Graph klaseko bilatzailea(String gakoHitz) metodoa");
+			System.out.println("14.Graph klaseko bilatzailea(String gakoHitz1,String gakoHitz2) metodoa");
 			
 			int zenbakia=teklatua.irakurriZenb();
 			WebOrria web=null;
@@ -204,12 +205,27 @@ public class Main {
 				}
 			}
 			else if(zenbakia == 13) {
-				System.out.println("Url bat sartu");
+				System.out.println("Gako bat sartu");
 				String a = teklatua.irakurriString();
-				ArrayList<Bikote> emaitza = grafoa.bilatzailea(a);
+				ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
+				emaitza = grafoa.bilatzaileBat(a);
 				for (int i = 0;i<emaitza.size();i++) {
 					System.out.println(emaitza.get(i));
 				}
+			}
+			else if(zenbakia == 14) {
+				System.out.println("Gako bat sartu");
+				String a = teklatua.irakurriString();
+				System.out.println("Beste gako bat sartu");
+				String b = teklatua.irakurriString();
+				
+				ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
+				emaitza = grafoa.bilatzaileBi(a,b);
+				for (int i = 0;i<emaitza.size();i++) {
+					System.out.println(emaitza.get(i));
+				}
+				
+				
 			}
 			
 		}	
