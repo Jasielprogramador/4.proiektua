@@ -114,7 +114,7 @@ public class WebOrriak {
 	}
 	
 	//Te da las paginas web que contiene una palabra
-	public ArrayList<String> word2Webs(String s){
+	public ArrayList<String> web2Words(String s){
 		ArrayList<String> e = new ArrayList<String>();
 		Iterator<WebOrria> itr=this.getIterator();
 		WebOrria w;
@@ -135,6 +135,7 @@ public class WebOrriak {
 			w= itr.next();
 			if(w.gakoWeb(s)) {
 				e.add((w));
+				System.out.println("Se añade");
 			}
 		}
 		return e;
@@ -259,6 +260,16 @@ public class WebOrriak {
     		System.out.println("There was an exception handling the file!");
     	}
          
+	}
+	
+	public void gakoUrlListaJarri(Gakoa g) {
+		ArrayList<WebOrria> emaitza = new ArrayList<WebOrria>();
+		for(int i = 0;i<this.lista.size();i++) {
+			if(this.lista.get(i).getUrl().contains(g.getIzena())) {
+				emaitza.add(this.lista.get(i));
+			}
+		}
+		g.listaJarri(emaitza);
 	}
 	
 	

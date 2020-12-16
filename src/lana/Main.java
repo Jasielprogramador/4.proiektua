@@ -62,7 +62,7 @@ public class Main {
 	
 	public static void hitzak(WebOrriak webLista,Gakoa gakoa) {
 		//Gako-hitz bat emanda, gako-hitz hau duten web-orrien zerranda bueltatu 
-		ArrayList<String> o=webLista.word2Webs(gakoa.getIzena());
+		ArrayList<String> o=webLista.web2Words(gakoa.getIzena());
 				
 		for(int i=0;i<o.size();i++) {
 			System.out.println(o.get(i));		

@@ -1,7 +1,7 @@
 package pasaden_lana;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.io.IOException;
@@ -11,10 +11,18 @@ import java.io.FileNotFoundException;
 public class Gakoak {
 	//atributuak
 	private ArrayList<Gakoa> lista;
+	private HashMap<String,Gakoa> mapGakoa;
+	
+	private static final Gakoak instance = new Gakoak();
+
+    public static Gakoak getInstance() {
+        return instance;
+    }
 	 
 	//eraikitzailea
 	public Gakoak() {
 		this.lista=new ArrayList<Gakoa>();
+		this.mapGakoa = new HashMap<String,Gakoa>();
 	}
 	
 	public Iterator<Gakoa> getIteradorea(){
@@ -23,18 +31,7 @@ public class Gakoak {
 	
 	//Esto lo añado para conseguir el gakoa para despues utilizarlo en el graph
 	public Gakoa gakoaLortu(String gakoa) {
-		boolean aurkitua = false;
-		Iterator<Gakoa> itr = this.getIteradorea();
-		Gakoa g = null;
-		while(itr.hasNext()) {
-			g = itr.next();
-			if(g.getIzena().equals(gakoa))
-				aurkitua = true;
-		}
-		if(!aurkitua) {
-			g = null;
-		}
-		return g;
+		return this.mapGakoa.get(gakoa);
 	}
 	
 	public void listaKargatu() {
@@ -45,6 +42,7 @@ public class Gakoak {
 			while(sarrera.hasNextLine()) {
 				lerroa=sarrera.nextLine();
 				Gakoa g=new Gakoa(lerroa);
+				this.mapGakoa.put(lerroa, g);
 				this.lista.add(g);
 			}
 			sarrera.close();
@@ -60,23 +58,23 @@ public class Gakoak {
 	}
 	
 	//Te da las palabras que contiene una pagina web
-	public ArrayList<String> web2Words(String w){
-		ArrayList<String> e = new ArrayList<String>();
-		Iterator<Gakoa> itr=this.getIteradorea();
-		Gakoa g;
-		
-		while(itr.hasNext()) {
-			g=itr.next();
-			if(g.webGako(w)){
-				e.add(g.getIzena());
-			}
+	public ArrayList<WebOrria> word2Webs(String w){
+		ArrayList<WebOrria> urlLista = new ArrayList<WebOrria>();
+		if(!mapGakoa.get(w).equals(null)) {
+			Gakoa gakoa = mapGakoa.get(w);
+			urlLista = gakoa.getLista();
 		}
-		return e;
+		return urlLista;
 		
 	}
 	
 	public ArrayList<Gakoa> getLista(){
 		return this.lista;
 	}
+	
+	public HashMap<String,Gakoa> getMap(){
+		return this.mapGakoa;
+	}
+	
 
 }

@@ -36,8 +36,8 @@ public class Gakoa {
 		return this.lista;
 	}
 	
-	public void kargatuLista() {
-		this.lista = WebOrriak.getNireWebOrriak().gakoaWebOrriak(this.izena);
+	public void listaJarri(ArrayList<WebOrria> a) {
+		this.lista=a;
 	}
 	
 }

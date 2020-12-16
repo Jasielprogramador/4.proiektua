@@ -294,25 +294,23 @@ public class Graph {
 		//berepagerank-aren   arabera   handienetik   txikienera   ordenatuta
 		//(hau   da,lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
 		
-		Gakoak gakoak = new Gakoak();
-		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
-		gakoak.listaKargatu();
 		
-		for(int i = 0;i<gakoak.getLista().size();i++) {
-			gakoak.getLista().get(i).kargatuLista();
-		}
+		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
+		Gakoak.getInstance().listaKargatu();
 	
-		if(gakoak.gakoaLortu(gakoHitz).equals(null))
+		ArrayList<Gakoa> lista = Gakoak.getInstance().getLista();
+		HashMap<String,Gakoa> mapGakoa = Gakoak.getInstance().getMap();
+		
+		
+		if(Gakoak.getInstance().gakoaLortu(gakoHitz).equals(null))
 			System.out.println("Sartu duzun gakoa ez dago words.txt dokumentuaren barne");
 		
 		else {
-		
-			Gakoa gakoa = gakoak.gakoaLortu(gakoHitz);			//Lehenik gako hitzen lista kargatuko dut
-																	//Hemen gakoHitz(izena) hori duen gakoa lortu egiten dut gakoaLortu() metodoaren
-																			//bitartez, eta ondoren gako horrek berarekin erlazionaturik dituen url-en lista
-																			//kargatzen du	
+			Gakoa g = Gakoak.getInstance().gakoaLortu(gakoHitz);
+			WebOrriak.getNireWebOrriak().gakoUrlListaJarri(g);
+			
 			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
-			webOrrienLista = gakoa.getLista();
+			webOrrienLista = Gakoak.getInstance().word2Webs(gakoHitz);
 																					//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
 																					//lista gordetzen du
 			for (int i = 0;i<webOrrienLista.size();i++) {
