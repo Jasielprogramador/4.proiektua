@@ -34,6 +34,7 @@ public class Gakoak {
 		return this.mapGakoa.get(gakoa);
 	}
 	
+	//lista kargatzeko
 	public void listaKargatu() {
 		try {
 			Scanner sarrera=new Scanner(new FileReader("words.txt"));
@@ -71,10 +72,5 @@ public class Gakoak {
 	public ArrayList<Gakoa> getLista(){
 		return this.lista;
 	}
-	
-	public HashMap<String,Gakoa> getMap(){
-		return this.mapGakoa;
-	}
-	
 
 }

@@ -183,9 +183,6 @@ public class Graph {
 	
 	public HashMap<String,Double> pageRank() {
 		
-		//Exekuzio denbora kalkulatzeko
-		long hasiera = System.currentTimeMillis();
-		
 		//Ea iterazio gehiago ala ez
 		double diferentziaAbsolutua = 0.0;
 		
@@ -207,6 +204,8 @@ public class Graph {
 			}
 			
 			int kont=0;
+			
+			//diferentziaAbsolutua>=0.0001
 			while(kont<30  || lehena) {
 				lehena = false;
 				
@@ -234,9 +233,6 @@ public class Graph {
 				System.out.println("iterazioa");
 			}
 			
-			long bukaera = System.currentTimeMillis();
-			double denbora=(double)((bukaera-hasiera)/1000);
-			System.out.println(denbora);
 		}	
 		return berria;
 	}
@@ -247,7 +243,7 @@ public class Graph {
 	
 	//QUICKSORT
 	/////////////////////////////////////////////////////////////////////////////////////////
-	public void quickSort(ArrayList<Bikote > lista,int hasiera, int bukaera) {
+	public void quickSort(ArrayList<Bikote> lista,int hasiera, int bukaera) {
 		if(bukaera-hasiera>0) {
 			
 			int z = this.zatiketa(lista,hasiera,bukaera);
@@ -308,10 +304,12 @@ public class Graph {
 			//webOrrienLista kargatu
 			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
 			webOrrienLista = Gakoak.getInstance().word2Webs(gakoHitz);
-																					//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
-																					//lista gordetzen du
-			for (int i = 0;i<webOrrienLista.size();i++) {
-				Double pr = this.pageRank().get(webOrrienLista.get(i).getUrl());
+								
+			HashMap<String,Double> map = this.pageRank();
+			
+			//webOrrienLista.size()
+			for (int i = 0;i<30;i++) {
+				Double pr = map.get(webOrrienLista.get(i).getUrl());	
 				Bikote bikote = new Bikote(webOrrienLista.get(i).getUrl(),pr);
 				emaitza.add(bikote);
 			}
@@ -330,47 +328,44 @@ public class Graph {
 		//bere pagerank-aren arabera handienetik txikienera ordenatuta (hau da,
 		//lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
 		
-		
-		Gakoak g1 = new Gakoak();
-		Gakoak g2 = new Gakoak();
 		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
-		g1.listaKargatu();	
-		g2.listaKargatu();	
+		Gakoak.getInstance().listaKargatu();
 		
-		for(int i = 0;i<g1.getLista().size();i++) {
-			g1.getLista().get(i).kargatuLista();
-		}
+		if(Gakoak.getInstance().gakoaLortu(gakoHitz1)==null || Gakoak.getInstance().gakoaLortu(gakoHitz2)==null)
+			System.out.println("Sartu duzun gakoa ez dago words.txt dokumentuaren barne");
 		
-		for(int i = 0;i<g2.getLista().size();i++) {
-			g2.getLista().get(i).kargatuLista();
-		}
-		
-		if(g1.gakoaLortu(gakoHitz1).equals(null) || g2.gakoaLortu(gakoHitz2).equals(null))	
-			System.out.println("Sartutako gakoren bat ez dago words.txt dokumentuaren barne");
 		else {
-			g1.gakoaLortu(gakoHitz1).kargatuLista();	
-			g2.gakoaLortu(gakoHitz2).kargatuLista();						
+			Gakoa g1 = Gakoak.getInstance().gakoaLortu(gakoHitz1);
+			Gakoa g2 = Gakoak.getInstance().gakoaLortu(gakoHitz2);
 			
-			ArrayList<WebOrria> e1 = new ArrayList<WebOrria>();	
-			ArrayList<WebOrria> e2 = new ArrayList<WebOrria>();
-			e1 = g1.gakoaLortu(gakoHitz1).getLista();	
-			e2 = g2.gakoaLortu(gakoHitz2).getLista();		
+			WebOrriak.getNireWebOrriak().gakoUrlListaJarri(g1);
+			WebOrriak.getNireWebOrriak().gakoUrlListaJarri(g2);
 			
-			for (int i = 0;i<e1.size();i++) {
-				Double pr = this.pageRank().get(e1.get(i).getUrl());
-				Bikote bikote = new Bikote(e1.get(i).getUrl(),pr);
+			//webOrrienLista kargatu
+			ArrayList<WebOrria> webOrrienLista1 = new ArrayList<WebOrria>();
+			ArrayList<WebOrria> webOrrienLista2 = new ArrayList<WebOrria>();
+			webOrrienLista1 = Gakoak.getInstance().word2Webs(gakoHitz1);
+			webOrrienLista2 = Gakoak.getInstance().word2Webs(gakoHitz1);
+								
+			HashMap<String,Double> map = this.pageRank();
+			
+			for (int i = 0;i<webOrrienLista1.size();i++) {
+				Double pr = map.get(webOrrienLista1.get(i).getUrl());	
+				Bikote bikote = new Bikote(webOrrienLista1.get(i).getUrl(),pr);
 				emaitza.add(bikote);
 			}
 			
-			for (int i = 0;i<e2.size();i++) {
-				Double pr = this.pageRank().get(e2.get(i).getUrl());
-				Bikote bikote = new Bikote(e2.get(i).getUrl(),pr);
+			for (int i = 0;i<webOrrienLista2.size();i++) {
+				Double pr = map.get(webOrrienLista2.get(i).getUrl());	
+				Bikote bikote = new Bikote(webOrrienLista2.get(i).getUrl(),pr);
 				emaitza.add(bikote);
 			}
 			
 			this.quickSort(emaitza, 0, emaitza.size()-1);
 			
 		}
+		
+		
 		return emaitza;
 	}
 	
