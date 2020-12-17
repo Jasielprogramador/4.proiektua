@@ -36,8 +36,8 @@ public class Gakoa {
 		return this.lista;
 	}
 	
-	public void listaJarri(ArrayList<WebOrria> a) {
-		this.lista=a;
+	public void listaraSartu(WebOrria w) {
+		this.lista.add(w);
 	}
 	
 }

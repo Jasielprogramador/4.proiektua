@@ -263,16 +263,11 @@ public class WebOrriak {
 	}
 	
 	public void gakoUrlListaJarri(Gakoa g) {
-		ArrayList<WebOrria> emaitza = new ArrayList<WebOrria>();
 		for(int i = 0;i<this.lista.size();i++) {
 			if(this.lista.get(i).getUrl().contains(g.getIzena())) {
-				emaitza.add(this.lista.get(i));
+				g.listaraSartu(this.lista.get(i));
 			}
 		}
-		g.listaJarri(emaitza);
 	}
-	
-	
-	
-	
+
 }

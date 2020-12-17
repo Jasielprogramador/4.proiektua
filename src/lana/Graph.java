@@ -297,18 +297,15 @@ public class Graph {
 		
 		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 		Gakoak.getInstance().listaKargatu();
-	
-		ArrayList<Gakoa> lista = Gakoak.getInstance().getLista();
-		HashMap<String,Gakoa> mapGakoa = Gakoak.getInstance().getMap();
 		
-		
-		if(Gakoak.getInstance().gakoaLortu(gakoHitz).equals(null))
+		if(Gakoak.getInstance().gakoaLortu(gakoHitz)==null)
 			System.out.println("Sartu duzun gakoa ez dago words.txt dokumentuaren barne");
 		
 		else {
 			Gakoa g = Gakoak.getInstance().gakoaLortu(gakoHitz);
 			WebOrriak.getNireWebOrriak().gakoUrlListaJarri(g);
 			
+			//webOrrienLista kargatu
 			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
 			webOrrienLista = Gakoak.getInstance().word2Webs(gakoHitz);
 																					//hemen emaitza aldagaiaren barnean gakoa gako horrek berarekin erlazionaturik dituen url-en
