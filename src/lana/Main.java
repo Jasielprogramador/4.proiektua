@@ -206,7 +206,7 @@ public class Main {
 				ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 				emaitza = grafoa.bilatzaileBat(a);
 				for (int i = 0;i<emaitza.size();i++) {
-					System.out.println(i+"-----"+emaitza.get(i));
+					System.out.println(i+":"+emaitza.get(i).getWeb()+"----"+emaitza.get(i).getPageRank());
 				}
 			}
 			else if(zenbakia == 14) {
@@ -218,7 +218,7 @@ public class Main {
 				ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 				emaitza = grafoa.bilatzaileBi(a,b);
 				for (int i = 0;i<emaitza.size();i++) {
-					System.out.println(i+"-----"+emaitza.get(i));
+					System.out.println(i+":"+emaitza.get(i).getWeb()+"----"+emaitza.get(i).getPageRank());
 				}
 				
 			}

@@ -230,7 +230,7 @@ public class Graph {
 				}
 				
 				zaharra = berria;
-				System.out.println("iterazioa:"+kont+"-----diferentzia:"+diferentziaAbsolutua);
+				System.out.println("iterazioa:"+kont+"-----diferentzia: "+diferentziaAbsolutua);
 				kont++;
 				
 			}
