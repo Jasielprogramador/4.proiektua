@@ -361,10 +361,7 @@ public class Graph {
 			}
 			
 			this.quickSort(emaitza, 0, emaitza.size()-1);
-			
 		}
-		
-		
 		return emaitza;
 	}
 	
