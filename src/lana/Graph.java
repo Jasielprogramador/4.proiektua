@@ -206,8 +206,9 @@ public class Graph {
 			int kont=0;
 			
 			//diferentziaAbsolutua>=0.0001
-			while(kont<30  || lehena) {
+			while(diferentziaAbsolutua<=0.0001  || lehena) {
 				lehena = false;
+				berria = new HashMap<String,Double>();
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
 					
@@ -225,12 +226,11 @@ public class Graph {
 					diferentziaAbsolutua += Math.abs(zaharra.get(this.keys[i])-berria.get(this.keys[i]));
 				}
 				
-				HashMap<String,Double> aux = zaharra;
 				zaharra = berria;
-				berria = aux;
+				System.out.println("iterazioa:"+kont+"-----diferentzia:"+diferentziaAbsolutua);
+				diferentziaAbsolutua=0.0;
 				kont++;
 				
-				System.out.println("iterazioa");
 			}
 			
 		}	
@@ -317,7 +317,6 @@ public class Graph {
 			this.quickSort(emaitza, 0, emaitza.size()-1);
 			
 		}
-		
 		
 		return emaitza;
 	}
