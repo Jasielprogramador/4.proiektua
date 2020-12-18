@@ -26,8 +26,11 @@ public class Graph {
 	//URL bakoitza zein beste URL ditu
 	private ArrayList<Integer>[] adjList;
 	
-	
+	//adjList-aren alderantzizkoa
 	private ArrayList<Integer>[] adjListAlde;
+	
+	//url guztien page rank-a
+	private HashMap<String,Double> pageRankAtributua;
 
 	
 	//Eraikitzailea
@@ -205,10 +208,10 @@ public class Graph {
 			
 			int kont=0;
 			
-			//diferentziaAbsolutua>=0.0001
-			while(diferentziaAbsolutua<=0.0001  || lehena) {
+			while(diferentziaAbsolutua>=0.0001  || lehena) {
 				lehena = false;
 				berria = new HashMap<String,Double>();
+				diferentziaAbsolutua=0.0;
 				
 				for(int j = 0; j<grafoarenLuzeera;j++) {
 					
@@ -228,12 +231,13 @@ public class Graph {
 				
 				zaharra = berria;
 				System.out.println("iterazioa:"+kont+"-----diferentzia:"+diferentziaAbsolutua);
-				diferentziaAbsolutua=0.0;
 				kont++;
 				
 			}
+			System.out.println("Iterazio kopurua:"+kont); 	
 			
 		}	
+		this.pageRankAtributua=berria;
 		return berria;
 	}
 	
@@ -271,7 +275,7 @@ public class Graph {
 		}
 		lista.set(i, lista.get(eskuin));
 		WebOrria web = WebOrriak.getNireWebOrriak().getWebOrria(lag);
-		Bikote b = new Bikote(web.getUrl(),this.pageRank().get(web.getUrl()));
+		Bikote b = new Bikote(web.getUrl(),this.pageRankAtributua.get(web.getUrl()));
 		lista.set(eskuin,b);
 		
 		return eskuin;
@@ -305,10 +309,9 @@ public class Graph {
 			ArrayList<WebOrria> webOrrienLista = new ArrayList<WebOrria>();
 			webOrrienLista = Gakoak.getInstance().word2Webs(gakoHitz);
 								
-			HashMap<String,Double> map = this.pageRank();
+			HashMap<String,Double> map = this.pageRankAtributua;
 			
-			//webOrrienLista.size()
-			for (int i = 0;i<30;i++) {
+			for (int i = 0;i<webOrrienLista.size();i++) {
 				Double pr = map.get(webOrrienLista.get(i).getUrl());	
 				Bikote bikote = new Bikote(webOrrienLista.get(i).getUrl(),pr);
 				emaitza.add(bikote);
@@ -346,7 +349,7 @@ public class Graph {
 			webOrrienLista1 = Gakoak.getInstance().word2Webs(gakoHitz1);
 			webOrrienLista2 = Gakoak.getInstance().word2Webs(gakoHitz1);
 								
-			HashMap<String,Double> map = this.pageRank();
+			HashMap<String,Double> map = this.pageRankAtributua;
 			
 			for (int i = 0;i<webOrrienLista1.size();i++) {
 				Double pr = map.get(webOrrienLista1.get(i).getUrl());	
