@@ -221,7 +221,6 @@ public class Main {
 					System.out.println(i+"-----"+emaitza.get(i));
 				}
 				
-				
 			}
 			
 		}	

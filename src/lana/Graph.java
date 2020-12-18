@@ -277,7 +277,6 @@ public class Graph {
 		WebOrria web = WebOrriak.getNireWebOrriak().getWebOrria(lag);
 		Bikote b = new Bikote(web.getUrl(),this.pageRankAtributua.get(web.getUrl()));
 		lista.set(eskuin,b);
-		
 		return eskuin;
 	}
 	
@@ -293,7 +292,6 @@ public class Graph {
 		// Post: Emaitza emandako gako-hitza duten web-orrien zerrenda da,
 		//berepagerank-aren   arabera   handienetik   txikienera   ordenatuta
 		//(hau   da,lehenengo posizioetan pagerank handiena duten web-orriak agertuko dira)
-		
 		
 		ArrayList<Bikote> emaitza = new ArrayList<Bikote>();
 		Gakoak.getInstance().listaKargatu();
@@ -317,8 +315,7 @@ public class Graph {
 				emaitza.add(bikote);
 			}
 			
-			this.quickSort(emaitza, 0, emaitza.size()-1);
-			
+			this.quickSort(emaitza, 0, emaitza.size()-1);	
 		}
 		
 		return emaitza;
