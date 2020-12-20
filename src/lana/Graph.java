@@ -258,25 +258,24 @@ public class Graph {
 	}
 	
 	private int zatiketa(ArrayList<Bikote> lista,int i, int f) {
-		String lag=lista.get(i).getWeb();
+		Bikote lag=lista.get(i);
 		int ezker =i;
 		int eskuin=f;
 		
 		while(ezker<eskuin) {
-			while(lista.get(ezker).getWeb().compareTo(lag)<=0 && ezker<eskuin) {
+			while(lista.get(ezker).getPageRank().compareTo(lag.getPageRank())<=0 && ezker<eskuin) {
 				ezker++;
 			}
-			while(lista.get(eskuin).getWeb().compareTo(lag)>0) {
+			while(lista.get(eskuin).getPageRank().compareTo(lag.getPageRank())>0) {
 				eskuin--;
 			}
 			if(ezker<eskuin) {
 				this.swap(lista, ezker,eskuin);
 			}
 		}
+		//hau da aldatu dudana
 		lista.set(i, lista.get(eskuin));
-		WebOrria web = WebOrriak.getNireWebOrriak().getWebOrria(lag);
-		Bikote b = new Bikote(web.getUrl(),this.pageRankAtributua.get(web.getUrl()));
-		lista.set(eskuin,b);
+		lista.set(eskuin, lag);
 		return eskuin;
 	}
 	
@@ -344,7 +343,7 @@ public class Graph {
 			ArrayList<WebOrria> webOrrienLista1 = new ArrayList<WebOrria>();
 			ArrayList<WebOrria> webOrrienLista2 = new ArrayList<WebOrria>();
 			webOrrienLista1 = Gakoak.getInstance().word2Webs(gakoHitz1);
-			webOrrienLista2 = Gakoak.getInstance().word2Webs(gakoHitz1);
+			webOrrienLista2 = Gakoak.getInstance().word2Webs(gakoHitz2);
 								
 			HashMap<String,Double> map = this.pageRankAtributua;
 			
